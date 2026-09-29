@@ -12,6 +12,12 @@ npm run build    # 타입체크 후 프로덕션 빌드
 npm run preview  # 빌드 결과 미리보기
 ```
 
+## 배포 (Netlify)
+
+`netlify.toml`에 빌드 명령(`npm run build`)과 배포 디렉터리(`dist`), SPA 리다이렉트가 설정되어 있다.
+Netlify에서 이 GitHub 저장소를 연결하면 push할 때마다 자동으로 빌드/배포된다.
+(빌드 명령: `npm run build`, 게시 디렉터리: `dist`)
+
 ## 기능
 
 - 생년월일(양력), 출생시간(모름 선택 가능), 출생지역 직접 입력

@@ -1,0 +1,15 @@
+# Netlify 배포 설정
+# Vite로 빌드한 결과(dist)를 정적 사이트로 서빙한다.
+# SPA 특성상 모든 경로를 index.html로 돌려보내 새로고침/직접 접근 시 404를 막는다.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
