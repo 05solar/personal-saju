@@ -1,0 +1,131 @@
+/*
+ * DatePicker.css
+ * 커스텀 달력 스타일. 큰 폰트와 넉넉한 클릭 영역, 절제된 radius를 사용한다.
+ * 배경은 오프화이트, 강조는 딥 그린 톤 하나만 쓴다.
+ */
+
+.date-picker {
+  position: relative;
+  width: 100%;
+}
+
+.date-picker__trigger {
+  width: 100%;
+  padding: 16px;
+  font-size: 19px;
+  text-align: left;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.date-picker__trigger:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.date-picker__trigger--empty {
+  color: var(--ink-faint);
+}
+
+.date-picker__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  width: max-content;
+  max-width: 100%;
+  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.date-picker__top {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.date-picker__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.date-picker__navbtn {
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.date-picker__navbtn:hover {
+  background: var(--panel-alt);
+}
+
+.date-picker__navlabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.date-picker__weekdays,
+.date-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 34px);
+  gap: 2px;
+}
+
+.date-picker__weekdays {
+  margin-bottom: 2px;
+}
+
+.date-picker__weekday {
+  padding: 2px 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: #000000;
+}
+
+.date-picker__empty {
+  width: 34px;
+  height: 34px;
+}
+
+.date-picker__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.date-picker__day:hover {
+  background: var(--panel-alt);
+}
+
+.date-picker__day--selected,
+.date-picker__day--selected:hover {
+  color: var(--panel);
+  background: var(--accent);
+  font-weight: 700;
+}

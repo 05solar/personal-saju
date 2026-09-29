@@ -1,0 +1,62 @@
+/*
+ * SajuPage.css
+ * 사주 계산 페이지 레이아웃. 중앙 단일 컬럼 구성이며, 섹션 사이는 카드가 아니라
+ * 가로 구분선(divider)으로만 나눈다.
+ */
+
+.saju-page {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px 80px;
+}
+
+.saju-page__inner {
+  width: 100%;
+  max-width: 680px;
+}
+
+.saju-page__header {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.saju-page__title {
+  margin-bottom: 10px;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.saju-page__subtitle {
+  color: #000000;
+  font-size: 17px;
+}
+
+.saju-page__section {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.saju-page__error {
+  margin-top: 24px;
+  padding: 16px 18px;
+  color: #000000;
+  background: var(--panel-alt);
+  border-radius: var(--radius);
+  font-size: 16px;
+}
+
+.saju-page__result {
+  padding-top: 32px;
+}
+
+.saju-page__result-title {
+  margin: 40px 0 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.saju-page__result-title:first-child {
+  margin-top: 0;
+}

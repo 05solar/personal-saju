@@ -1,0 +1,154 @@
+/*
+ * BirthInputForm.css
+ * 생년월일/출생시간/출생지역 입력 폼 스타일.
+ * 입력창과 글씨는 크게, 배경은 오프화이트, radius는 절제해서 사용한다.
+ */
+
+.birth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.birth-form__row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.birth-form__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.birth-form__input {
+  width: 100%;
+  padding: 16px;
+  font-size: 19px;
+  color: #000000;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.birth-form__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.birth-form__input:disabled {
+  background: var(--panel-alt);
+  color: #000000;
+}
+
+.birth-form__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 16px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.birth-form__check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.birth-form__hint {
+  font-size: 15px;
+  color: #000000;
+}
+
+.birth-form__error {
+  font-size: 15px;
+  color: #000000;
+}
+
+.birth-form__submit {
+  margin-top: 4px;
+  padding: 16px 20px;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--panel);
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.birth-form__submit:hover {
+  background: var(--accent-strong);
+}
+
+/* 출생지역: 국가/도시 드롭다운 2열 */
+.birth-form__geo {
+  display: flex;
+  gap: 12px;
+}
+
+.birth-form__geo-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.birth-form__sublabel {
+  font-size: 14px;
+  color: #000000;
+}
+
+/* 도시 검색 결과: 카드 테두리 대신 항목 사이 중간선(divider)으로 구분 */
+.birth-form__results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.birth-form__result {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.birth-form__results li:last-child .birth-form__result {
+  border-bottom: none;
+}
+
+.birth-form__result:hover {
+  background: var(--panel-alt);
+}
+
+.birth-form__result-country {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.birth-form__result-empty {
+  padding: 13px 16px;
+  font-size: 15px;
+  color: #000000;
+}

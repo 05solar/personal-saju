@@ -1,0 +1,72 @@
+/*
+ * global.css
+ * 전역 디자인 토큰(색/간격/radius), CSS 리셋, 기본 타이포그래피를 정의한다.
+ * 배경은 완전한 흰색이 아닌 오프화이트를 사용하고, 색은 절제된 톤으로 제한한다.
+ */
+
+:root {
+  /* 배경/표면: 완전한 흰색 금지, 오프화이트 계열 */
+  --bg: #f3f1ea;
+  --panel: #f9f7f1;
+  --panel-alt: #efece4;
+
+  /* 잉크(텍스트) */
+  --ink: #26221c;
+  --ink-soft: #6f685d;
+  --ink-faint: #9a9388;
+
+  /* 구분선 */
+  --line: #ddd7ca;
+  --line-strong: #cbc4b4;
+
+  /* 강조색: 절제된 딥 그린 톤 하나만 사용 */
+  --accent: #2f5d54;
+  --accent-strong: #274c45;
+  --accent-soft: #e3ece8;
+
+  /* 오행 색: 무지개색이 아닌 채도를 낮춘 전통 오행 톤 */
+  --el-mok: #4b7d5b;
+  --el-hwa: #b0553f;
+  --el-to: #a8843e;
+  --el-geum: #7f858c;
+  --el-su: #3f5c78;
+
+  /* radius: 과하지 않은 값만 사용 */
+  --radius: 8px;
+
+  --font: "Pretendard", system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #000000;
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+input,
+button,
+select {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}

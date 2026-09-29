@@ -1,0 +1,65 @@
+/*
+ * PillarTable.css
+ * 사주 명식 표 스타일. 카드가 아니라 표의 가로 구분선(divider)으로 행을 구분한다.
+ */
+
+.pillar {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: var(--radius);
+}
+
+.pillar__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pillar__col-head,
+.pillar__row-head,
+.pillar__corner {
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.pillar__col-head {
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.pillar__row-head {
+  width: 68px;
+  text-align: left;
+}
+
+.pillar__cell {
+  padding: 18px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.pillar__ko {
+  display: block;
+  font-size: 27px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.pillar__hanja {
+  display: block;
+  margin-top: 2px;
+  font-size: 16px;
+  color: #000000;
+}
+
+.pillar__unknown {
+  font-size: 18px;
+  color: #000000;
+}
+
+.pillar__note {
+  margin-top: 14px;
+  font-size: 15px;
+  color: #000000;
+}
