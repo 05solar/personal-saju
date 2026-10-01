@@ -2,6 +2,8 @@
  * BirthInputForm 컴포넌트
  * 사용자가 생년월일, 출생시간(모름 선택 가능), 출생지역을 직접 입력하는 폼.
  * 생년월일은 커스텀 달력(DatePicker), 출생시간은 커스텀 선택기(TimePicker)로 입력한다.
+ * 생년월일은 음력/양력을 체크박스로 고를 수 있고, 음력이면 윤달 선택과 양력 변환 미리보기를 제공한다.
+ * (음력 입력은 내부에서 양력으로 변환한 뒤 계산한다.)
  * 출생지역은 도시 검색 또는 국가/도시 드롭다운으로 고르며, 선택한 도시의 IANA 시간대와
  * 경도를 함께 넘겨 해외 시차(표준시/서머타임)를 자동 반영해 계산한다.
  * 입력값을 SajuInput 으로 만들어 onCalculate 콜백으로 상위(SajuPage)에 전달한다.
@@ -15,7 +17,7 @@ import {
   searchCities,
   type City,
 } from "../../lib/cities";
-import type { SajuInput } from "../../lib/saju";
+import { toSolarDate, type SajuInput } from "../../lib/saju";
 import { DatePicker } from "../DatePicker/DatePicker";
 import { Dropdown, type DropdownOption } from "../Dropdown/Dropdown";
 import { TimePicker } from "../TimePicker/TimePicker";
@@ -25,6 +27,8 @@ const DEFAULT_CITY = findCity(DEFAULT_CITY_ID)!;
 
 export function BirthInputForm({ onCalculate }: { onCalculate: (input: SajuInput) => void }) {
   const [birthDate, setBirthDate] = useState("");
+  const [isLunar, setIsLunar] = useState(false); // false = 양력, true = 음력
+  const [isLeapMonth, setIsLeapMonth] = useState(false); // 음력일 때 윤달 여부
   const [birthTime, setBirthTime] = useState("");
   const [timeUnknown, setTimeUnknown] = useState(false);
   const [country, setCountry] = useState(DEFAULT_CITY.country);
@@ -42,6 +46,22 @@ export function BirthInputForm({ onCalculate }: { onCalculate: (input: SajuInput
   );
   const searchResults = useMemo(() => searchCities(citySearch), [citySearch]);
   const selectedCity = findCity(cityId);
+
+  // 음력으로 입력한 경우, 양력으로 변환된 날짜 미리보기(변환 불가면 null)
+  const solarPreview = useMemo(() => {
+    if (!isLunar || !birthDate) return null;
+    const [y, m, d] = birthDate.split("-").map(Number);
+    if (!y || !m || !d) return null;
+    return toSolarDate({
+      year: y,
+      month: m,
+      day: d,
+      calendar: "lunar",
+      isLeapMonth,
+      longitude: 0,
+      timeZone: "",
+    });
+  }, [isLunar, isLeapMonth, birthDate]);
 
   const handleCountryChange = (nextCountry: string) => {
     setCountry(nextCountry);
@@ -85,6 +105,16 @@ export function BirthInputForm({ onCalculate }: { onCalculate: (input: SajuInput
       return;
     }
 
+    const calendar = isLunar ? "lunar" : "solar";
+    // 음력 입력이면 변환 가능한 날짜인지 먼저 확인한다.
+    if (
+      isLunar &&
+      !toSolarDate({ year: y, month: m, day: d, calendar, isLeapMonth, longitude: 0, timeZone: "" })
+    ) {
+      setError("변환할 수 없는 음력 날짜입니다. 날짜(또는 윤달 여부)를 확인해 주세요.");
+      return;
+    }
+
     setError("");
     onCalculate({
       year: y,
@@ -94,14 +124,49 @@ export function BirthInputForm({ onCalculate }: { onCalculate: (input: SajuInput
       minute,
       longitude: selectedCity.longitude,
       timeZone: selectedCity.timeZone,
+      calendar,
+      isLeapMonth: isLunar ? isLeapMonth : undefined,
     });
   };
 
   return (
     <form className="birth-form" onSubmit={submit}>
       <div className="birth-form__row">
-        <span className="birth-form__label">생년월일 (양력)</span>
+        <span className="birth-form__label">생년월일 ({isLunar ? "음력" : "양력"})</span>
         <DatePicker value={birthDate} onChange={setBirthDate} />
+        <div className="birth-form__checks">
+          <label className="birth-form__check">
+            <input
+              type="checkbox"
+              checked={isLunar}
+              onChange={(e) => {
+                setIsLunar(e.target.checked);
+                if (!e.target.checked) setIsLeapMonth(false);
+              }}
+            />
+            <span>음력으로 입력</span>
+          </label>
+          {isLunar && (
+            <label className="birth-form__check">
+              <input
+                type="checkbox"
+                checked={isLeapMonth}
+                onChange={(e) => setIsLeapMonth(e.target.checked)}
+              />
+              <span>윤달</span>
+            </label>
+          )}
+        </div>
+        {isLunar && solarPreview && (
+          <p className="birth-form__hint">
+            양력 변환: {solarPreview.year}년 {solarPreview.month}월 {solarPreview.day}일
+          </p>
+        )}
+        {isLunar && birthDate && !solarPreview && (
+          <p className="birth-form__error">
+            변환할 수 없는 음력 날짜입니다. 날짜(또는 윤달 여부)를 확인해 주세요.
+          </p>
+        )}
       </div>
 
       <div className="birth-form__row">

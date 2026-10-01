@@ -11,7 +11,7 @@
  *     위 절차를 거치면 출생지가 어디든 올바른 진태양시로 계산된다.
  * (엑셀 입출력이나 백엔드 연동 없이 브라우저에서 단독으로 계산한다.)
  */
-import { calculateFourPillars } from "manseryeok";
+import { calculateFourPillars, lunarToSolar } from "manseryeok";
 import { zonedWallClockToUtc } from "./timezone";
 
 export type FiveElement = "목" | "화" | "토" | "금" | "수";
@@ -46,6 +46,24 @@ export interface SajuInput {
   minute?: number;
   longitude: number; // 진태양시 보정용 경도(동경)
   timeZone: string; // 출생지 IANA 시간대 ID (예: "Asia/Seoul")
+  calendar?: "solar" | "lunar"; // 입력한 생년월일의 역법. 생략 시 양력(solar).
+  isLeapMonth?: boolean; // 음력 입력일 때 윤달 여부 (calendar === "lunar" 일 때만 의미 있음)
+}
+
+/**
+ * 음력으로 입력된 생년월일을 양력으로 변환한다.
+ * 양력 입력이면 그대로 돌려주고, 변환 불가(지원 범위 밖 등)면 null.
+ */
+export function toSolarDate(input: SajuInput): { year: number; month: number; day: number } | null {
+  if (input.calendar !== "lunar") {
+    return { year: input.year, month: input.month, day: input.day };
+  }
+  try {
+    const s = lunarToSolar(input.year, input.month, input.day, input.isLeapMonth ?? false);
+    return { year: s.year, month: s.month, day: s.day };
+  } catch {
+    return null;
+  }
 }
 
 const ELEMENTS: FiveElement[] = ["목", "화", "토", "금", "수"];
@@ -53,8 +71,13 @@ const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
 
 // 생년월일/출생시간/시간대/경도로 사주를 계산한다. 잘못된 날짜 등 계산 불가면 null을 반환한다.
 export function computeSaju(input: SajuInput): SajuResult | null {
-  const { year, month, day, longitude, timeZone } = input;
-  if (!year || !month || !day) return null;
+  const { longitude, timeZone } = input;
+  if (!input.year || !input.month || !input.day) return null;
+
+  // 음력 입력이면 먼저 양력으로 변환한다(시간대/DST 보정은 실제 양력 날짜 기준으로 해야 정확).
+  const solar = toSolarDate(input);
+  if (!solar) return null;
+  const { year, month, day } = solar;
 
   const known = input.hour != null;
   const localHour = known ? (input.hour as number) : 12; // 시간 미상이면 정오로 계산 후 시주 제외
